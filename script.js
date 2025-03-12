@@ -5,74 +5,73 @@ document.addEventListener("DOMContentLoaded", async () => {
 
     let salesData = [];
     let salesLabels = [];
+    let totalRevenue = 0; // Track total donations received
 
     try {
         const response = await fetch(apiUrl);
         const data = await response.json();
 
-        if (!data.data || !Array.isArray(data.data)) {
-            console.error("Unexpected API response format:", data);
+        console.log("API Response:", data); // Debugging API response
+
+        // ✅ Handle unexpected API response format
+        if (!data || !data.data || !Array.isArray(data.data)) {
+            console.error("Invalid API response:", data);
             return;
         }
 
-        let totalRevenue = 0;
-
-        // Process sales data
+        // ✅ Process each donation transaction
         data.data.forEach((transaction, index) => {
-            let amount = transaction.amount / 100; // Convert cents to dollars
-            totalRevenue += amount;
+            let amountInDollars = transaction.amount / 100; // Convert cents to dollars
+            totalRevenue += amountInDollars; // Add to total donations
 
-            salesData.push(totalRevenue);
-            salesLabels.push(`Sale ${index + 1}`);
+            salesData.push(totalRevenue); // Track cumulative donation progress
+            salesLabels.push(`Donation ${index + 1}`); // Label donations in order
         });
 
-        // Create Small Chart with Black Line & Visible Labels
+        // ✅ Display total donation amount in the console (For Debugging)
+        console.log("Total Donations Received:", totalRevenue);
+
+        // ✅ Render Donation Progress Chart
         new Chart(ctx, {
             type: "line",
             data: {
                 labels: salesLabels,
                 datasets: [{
-                    label: "Sales Progress ($)",
+                    label: "Donation Progress ($)",
                     data: salesData,
-                    borderColor: "#000000", // 🖤 Black Line
-                    backgroundColor: "rgba(0, 0, 0, 0.1)", // Light gray fill
+                    borderColor: "#000000", // Black line
+                    backgroundColor: "rgba(0, 0, 0, 0.1)", // Light black fill
                     borderWidth: 3,
                     fill: true,
                     tension: 0.4
                 }]
             },
             options: {
-                responsive: false, // Prevent auto-resizing
-                maintainAspectRatio: true, // Keep proportions
+                responsive: false,
+                maintainAspectRatio: true,
                 scales: {
                     y: {
                         beginAtZero: true,
-                        max: 4500,
+                        max: 4500, // Keep the $4500 goal visible
                         grid: {
-                            color: "rgba(0, 0, 0, 0.2)" // Light gray grid lines for contrast
+                            color: "rgba(0, 0, 0, 0.2)"
                         },
                         ticks: {
-                            color: "#000000", // 🖤 Black text for Y-axis labels
-                            font: {
-                                size: 12
-                            }
+                            color: "#000000"
                         }
                     },
                     x: {
                         grid: {
-                            color: "rgba(0, 0, 0, 0.2)" // Light gray grid lines for contrast
+                            color: "rgba(0, 0, 0, 0.2)"
                         },
                         ticks: {
-                            color: "#000000", // 🖤 Black text for X-axis labels
-                            font: {
-                                size: 12
-                            }
+                            color: "#000000"
                         }
                     }
                 },
                 plugins: {
                     legend: {
-                        display: false // Hide legend for a cleaner look
+                        display: false
                     }
                 }
             }

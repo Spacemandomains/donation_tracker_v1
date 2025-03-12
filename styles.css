@@ -66,3 +66,21 @@ canvas {
         height: 140px;
     }
 }
+
+/* Donate Button Styling */
+.donate-button {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 12px 20px;
+    background-color: #ffcc00; /* Stripe Yellow */
+    color: #000000;
+    font-size: 18px;
+    font-weight: bold;
+    text-decoration: none;
+    border-radius: 8px;
+    transition: background 0.3s ease;
+}
+
+.donate-button:hover {
+    background-color: #ff9900; /* Darker shade on hover */
+}
